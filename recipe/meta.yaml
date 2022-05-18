@@ -1,5 +1,4 @@
-{% set version = '1.0-5' %}
-
+{% set version = "1.1-0" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -8,45 +7,50 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: survAUC_{{ version }}.tar.gz
   url:
-    - https://cran.r-project.org/src/contrib/survAUC_{{ version }}.tar.gz
-    - https://cran.r-project.org/src/contrib/Archive/survAUC/survAUC_{{ version }}.tar.gz
-  sha256: f9ff65742d827f37cdac799e81939726d50047dfeb2740b1d4008615054a922d
+    - {{ cran_mirror }}/src/contrib/survAUC_{{ version }}.tar.gz
+    - {{ cran_mirror }}/src/contrib/Archive/survAUC/survAUC_{{ version }}.tar.gz
+  sha256: acc0d53de0d7e7fe8cd871304c164e4d759c2cfbf974ae144f9796712e09d064
 
 build:
   merge_build_host: True  # [win]
-  number: 1003
-  skip: true  # [win32]
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
 
 requirements:
   build:
-    - posix                # [win]
-    - {{ compiler('c') }}        # [unix]
-    - {{ compiler('m2w64_c') }}  # [win]
+    - {{ compiler('c') }}              # [not win]
+    - {{ compiler('m2w64_c') }}        # [win]
+    - {{ posix }}filesystem        # [win]
+    - {{ posix }}make
+    - {{ posix }}sed               # [win]
+    - {{ posix }}coreutils         # [win]
+    - {{ posix }}zip               # [win]
+    - cross-r-base {{ r_base }}    # [build_platform != target_platform]
   host:
     - r-base
+    - r-rms
     - r-survival
-
   run:
     - r-base
+    - {{ native }}gcc-libs         # [win]
+    - r-rms
     - r-survival
 
 test:
   commands:
-    - $R -e "library('survAUC')"  # [not win]
+    - $R -e "library('survAUC')"           # [not win]
     - "\"%R%\" -e \"library('survAUC')\""  # [win]
 
 about:
   home: https://CRAN.R-project.org/package=survAUC
-  license: GPL-2
-  summary: The package provides a variety of functions to estimate time-dependent true/false
-    positive rates and AUC curves from a set of censored survival data.
+  license: GPL-2.0-only
+  summary: The package provides a variety of functions to estimate time-dependent true/false positive rates and AUC curves from a set of censored survival data.
   license_family: GPL2
-  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-2'
+  license_file:
+    - {{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-2
 
 extra:
   recipe-maintainers:
