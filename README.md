@@ -3,7 +3,7 @@ About r-survauc
 
 Home: https://CRAN.R-project.org/package=survAUC
 
-Package license: GPL-2
+Package license: GPL-2.0-only
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/r-survauc-feedstock/blob/main/LICENSE.txt)
 
