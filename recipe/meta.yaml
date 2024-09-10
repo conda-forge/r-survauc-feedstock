@@ -1,4 +1,4 @@
-{% set version = "1.2-0" %}
+{% set version = "1.3-0" %}
 {% set posix = 'm2-' if win else '' %}
 
 package:
@@ -9,10 +9,10 @@ source:
   url:
     - {{ cran_mirror }}/src/contrib/survAUC_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/survAUC/survAUC_{{ version }}.tar.gz
-  sha256: 716eb80ff60779079bf4801ea0806f756f13ec16303a33f7ee6ad1527c251f8d
+  sha256: 1e4d0277ba2dd08adb4be09d8752006a5bf6aa8a405abe06bd2731056c7543a2
 
 build:
-  number: 2
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
